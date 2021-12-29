@@ -14,6 +14,18 @@
       "description": "Your bot token, as a string.",
       "value": ""
     },
+    "DATABASE_URL": {
+      "description": "Postgres DB URL",
+      "value": ""
+    },
+    "DROPLINK_API_TOKEN": {
+      "description": "API Token of your DropLink account (https://droplink.co)",
+      "value": ""
+    },
+    "SCREENSHOTS_COUNT": {
+      "description": "Screenshots count",
+      "value": "10"
+    },
     "SUDO_USERS": {
       "description": "allow only pre-defined users to use this bot",
       "value": "1532971861"
