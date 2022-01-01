@@ -162,6 +162,24 @@ bot.command('update_data', async (ctx) => {
     ctx.reply('Successfully Updated !!');
 });
 
+bot.command('update_data_by', async (ctx) => {
+    await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
+    
+    const params = ctx.message.text.split(' ');
+    const update_data_by = params[1];
+    const update_data_value = params[2];
+    const prev_value = params[3];
+
+    const results = await db.updateDataBy({ body: [update_data_by, update_data_value, prev_value] });
+    console.log('update-resylts', results);
+    ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id + 1);
+
+    if (results.error) {
+        return ctx.reply(results.error.msg);
+    }
+    ctx.reply(`Successfully updated ${update_data_by} field!!`);
+});
+
 bot.command('delete_data', async (ctx) => {
     await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
     const id = ctx.message.text.split('/delete_data ')[1];
