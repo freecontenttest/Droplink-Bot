@@ -52,13 +52,7 @@ app.listen(process.env.PORT || 5000);
 
 bot.catch((err, ctx) => {
     console.log('ctx--catch==========>', err);
-    let mainError;
-    if (err.description) mainError = err.description.split(': ')[1];
-    else if (typeof (err) == 'string') {
-        mainError = err.split(': ')[1];
-    }
-    if (!mainError) return;
-    ctx.reply(mainError);
+    ctx.reply(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
 /*
