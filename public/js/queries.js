@@ -115,5 +115,6 @@ module.exports = {
     getDataByDroplink,
     createData,
     updateData,
+    updateDataBy,
     deleteData
 };
