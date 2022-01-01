@@ -159,7 +159,7 @@ bot.command('update_data', async (ctx) => {
 bot.command('update_data_by', async (ctx) => {
     await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
     
-    const params = ctx.message.text.split(' ');
+    const params = ctx.message.text.split('  ');
     const update_data_by = params[1];
     const update_data_value = params[2];
     const prev_value = params[3];
