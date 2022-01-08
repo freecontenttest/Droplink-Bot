@@ -33,14 +33,17 @@ app.get('/', async (req, res) => {
 app.get('/:id', async (req, res) => { 
     if ((req.params.id).includes('.')) return;
     
+    const response = await axios.get(`https://auto-delete-messages-bot.herokuapp.com/`);
+    console.log('response====', response);
+    
     const results = await db.getDataByUniqId(req);
     if (results.total > 0) {
         const intentUrl = results.data[0].org_url.replace(/(^\w+:|^)\/\//, '');
         res.render(path.join(__dirname + '/public/ejs/index.ejs'), {
             video: results.data[0].org_url,
             video_name: results.data[0].video_name,
-            video_size: results.data[0].video_size != 0 ? func.formatBytes(results.data[0].video_size) : 'unknown',
-            video_duration: results.data[0].video_duration != 0 ? func.secondsToHms(results.data[0].video_duration) : 'unknown',
+            video_size: results.data[0].video_size != 0 ? func.formatBytes(results.data[0].video_size) : 'N/A',
+            video_duration: results.data[0].video_duration != 0 ? func.secondsToHms(results.data[0].video_duration) : 'N/A',
             url: `intent://${intentUrl}#Intent;package=com.playit.videoplayer;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end`
         });
     } else {
@@ -56,7 +59,9 @@ bot.catch((err, ctx) => {
 });
 
 /*
-Bot
+
+    BOT
+
 */
 
 bot.start((ctx) => {
@@ -75,7 +80,11 @@ bot.start((ctx) => {
     });
 });
 
-// Admin only command
+/*
+
+    ADMIN ONLY COMMAND
+
+*/
 
 bot.command('create', async (ctx) => {
     const res = await client.query('CREATE TABLE tg_droplink_data (id SERIAL PRIMARY KEY, droplink VARCHAR, org_url VARCHAR, uniq_id VARCHAR)');
@@ -204,7 +213,11 @@ bot.command('get_all_data', async (ctx) => {
     }
 });
 
-// user commands
+/*
+
+    USER COMMAND
+
+*/
 
 bot.command('animation_to_photo', (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
@@ -318,7 +331,9 @@ bot.command('short_to_droplink', async (ctx) => {
 });
 
 /*
-FFMPEG
+
+    FFMPEG
+
 */
 
 bot.command('ffmpeg2', async (ctx) => {
