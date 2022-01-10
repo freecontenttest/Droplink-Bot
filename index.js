@@ -219,8 +219,7 @@ bot.command('get_all_data', async (ctx) => {
 */
 
 bot.command('animation_to_photo', (ctx) => {
-    const isAllowed = func.isAdmin(ctx);;
-    if (!isAllowed.success) return ctx.reply(isAllowed.error);
+    if (!ctx.message || !ctx.message.reply_to_message || !ctx.message.reply_to_message.caption) return;
     
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.reply_to_message.caption.match(urlRegex);
@@ -242,6 +241,8 @@ bot.command('animation_to_photo', (ctx) => {
 });
 
 bot.command('convert_to_text', (ctx) => {
+    if (!ctx.message || !ctx.message.reply_to_message || !ctx.message.reply_to_message.caption) return;
+    
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.reply_to_message.caption.match(urlRegex);
     
@@ -260,6 +261,8 @@ bot.command('convert_to_text', (ctx) => {
 });
 
 bot.command('add_screenshot_link', (ctx) => {
+    if (!ctx.message || !ctx.message.reply_to_message || !ctx.message.reply_to_message.caption) return;
+    
     const screenshotLink = ctx.message.text.split(' ')[1];
     if (!screenshotLink) return;
     
