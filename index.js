@@ -251,8 +251,7 @@ bot.command('convert_to_text', (ctx) => {
     );
 });
 
-bot.command('add_screenshot_link', (ctx) => {
-    const fileUrl = 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
+bot.command(['add_screenshot_link', 'add_screenshot_link_mdisk'], (ctx) => {
     const screenshotLink = ctx.message.text.split(' ')[1];
     if (!screenshotLink) return;
 
@@ -260,14 +259,28 @@ bot.command('add_screenshot_link', (ctx) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const allURLs = repliedCaption.match(urlRegex);
     
-    let newMessage = func.getCaption(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
+    const method = ctx.message.text.includes('add_screenshot_link_mdisk') ? func.getMdiskCaption : func.getCaption;
+    
+    let newMessage = method(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
     newMessage = newMessage.replace('Replace\\_Link', screenshotLink);
 
-    ctx.telegram.sendAnimation(ctx.chat.id, fileUrl,
+    ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
         {
             caption: newMessage,
-            parse_mode: 'markdown'
+            parse_mode: ctx.message.text.includes('add_screenshot_link_mdisk') ? 'MarkdownV2' : 'markdown'
         }
+    );
+});
+
+bot.command(['mdisk', 'mdisk_video'], async (ctx) => {
+    const mdiskLink = ctx.message.text.split(' ')[1];
+    if (!mdiskLink) return;
+
+    ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+            {
+                caption: `${func.getMdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', !ctx.message.text.includes('mdisk_video'))}`,
+                parse_mode: 'MarkdownV2'
+            }
     );
 });
 
