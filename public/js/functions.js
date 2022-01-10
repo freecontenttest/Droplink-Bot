@@ -17,6 +17,7 @@ const getFromId = (ctx) => {
         return null
     }
 };
+
 const sendReply = (ctx, results) => {
     if (results.error) {
         return ctx.reply(results.error.msg);
@@ -30,6 +31,7 @@ const sendReply = (ctx, results) => {
         ctx.reply('No results found !!');
     }
 };
+
 const secondsToHms = (value) => {
     const d = Number(value);
     const h = Math.floor(d / 3600);
@@ -49,6 +51,7 @@ const secondsToHms = (value) => {
     if (sDisplay) return sDisplay;
     return '00: 00 : 00';
 };
+
 const formatBytes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
 
@@ -65,6 +68,20 @@ const getCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
     let URL_CAPTION = `❓️ _How To Download From DROPLINK_\n          _(Droplink से वीडियो कैसे डाउनलोड करे)_ 👇🏻️\n➤ https://t.me/how\\_to\\_download\\_movie\\_official/4\n\n\n🎬 *Video Link*\n ➪ ${shortenLink}\n\n\n`;
     if (isScreenshot) URL_CAPTION = '🔞️ _Screenshots/Preview/Trailer_\n ➪ Replace\\_Link\n\n' + URL_CAPTION;
     const BACKUP_CAPTION = `💠 _Backup Channel_ :\n ➤ ${BACKUP_CHANNEL}\n\n♻️ _Other Channels :_\n ➤ https://t.me/my\\_channels\\_list\\_official`;
+    
+    return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
+};
+
+const regExpEscape = (String) => {
+    return String.replace(/[-[\]{}()*_+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+};
+
+const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
+    const DEF_CAPTION = `*_💋️ Best Adult Premium Video\n\n❓️ How To Download From Mdisk\n          \\(Mdisk से वीडियो कैसे डाउनलोड करे\\) 👇🏻️\n➤ ${regExpEscape('https://t.me/how_to_download_movie_official/6')}\n\n\n`;
+    const SCREENSHOT_URL = '🔞️ Screenshots/Preview/Trailer :\n ➪ Replace\\_Link\n\n';
+    const URL_CAPTION = `︵‿︵‿︵‿︵‿୨♡୧‿︵‿︵‿︵‿︵\n\n📢 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐋𝐢𝐧𝐤𝐬/👀𝐖𝐚𝐭𝐜𝐡 𝐎𝐧𝐥𝐢𝐧𝐞 📌\n                    ««  MX PLAYER  »»\n\n\n${isScreenshot ? SCREENSHOT_URL : ''}🎬 Video Link :\n ➪ ${regExpEscape(shortenLink)}\n\n\n🚀 High Speed Download & No Buffering\n\n︵‿︵‿︵‿︵‿୨♡୧‿︵‿︵‿︵‿︵\n\n\n`;
+    const BACKUP_CAPTION = `💠 Backup Channel :\n ➤ ${regExpEscape(BACKUP_CHANNEL)}\n\n♻️ Other Channels :\n ➤ ${regExpEscape('https://t.me/my_channels_list_official')}_*`;
+    
     return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
 };
 
@@ -73,5 +90,7 @@ module.exports = {
     sendReply,
     secondsToHms,
     formatBytes,
-    getCaption
+    getCaption,
+    getMdiskCaption,
+    regExpEscape
 };
