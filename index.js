@@ -262,7 +262,7 @@ bot.command(['add_screenshot_link', 'add_screenshot_link_mdisk'], (ctx) => {
     const method = ctx.message.text.includes('add_screenshot_link_mdisk') ? func.getMdiskCaption : func.getCaption;
     
     let newMessage = method(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
-    newMessage = newMessage.replace('Replace\\_Link', screenshotLink);
+    newMessage = newMessage.replace('Replace\\_Link', func.regExpEscape(screenshotLink));
 
     ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
         {
