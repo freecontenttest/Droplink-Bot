@@ -271,9 +271,9 @@ bot.command('add_screenshot_link', (ctx) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const allURLs = repliedCaption.match(urlRegex);
     
-    const method = isMdiskPost ? func.getMdiskCaption : func.getCaption;
+    const captionMethod = isMdiskPost ? func.getMdiskCaption : func.getCaption;
     
-    let newMessage = method(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
+    let newMessage = captionMethod(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
     newMessage = newMessage.replace('Replace\\_Link', func.regExpEscape(screenshotLink));
     
     const method = ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
