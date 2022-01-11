@@ -289,6 +289,9 @@ bot.command('add_screenshot_link', (ctx) => {
 });
 
 bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
+    const isAllowed = func.isAdmin(ctx);;
+    if (!isAllowed.success) return ctx.reply(isAllowed.error);
+    
     let mdiskLink = ctx.message.text.split(' ')[1];
     let mdiskURL = '';
     let messageLink = 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
@@ -298,7 +301,17 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
         mdiskURL = repliedMessage.match(/(https?:\/\/mdisk[^\s]+)/g);
 
         if (mdiskURL !== null) {
-            mdiskLink = mdiskURL[0];
+            const params = {
+                token: ctx.from.id === 1532971861 ? process.env.MDISK_TOKEN : process.env.MDISK_TOKEN1,
+                link: mdiskURL[0]
+            };
+            try {
+                const respo = await axios.post('https://diskuploader.mypowerdisk.com/v1/tp/cp', params);
+                if (respo.status === 200) mdiskLink = respo.data.sharelink;
+            }
+            catch(error) {
+                throw error;
+            }
             if (ctx.message.reply_to_message.photo) messageLink = ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id;
             else messageLink = func.getPostImage();
         }
