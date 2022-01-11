@@ -284,13 +284,28 @@ bot.command('add_screenshot_link', (ctx) => {
     );
 });
 
-bot.command(['mdisk', 'mdisk_video'], async (ctx) => {
-    const mdiskLink = ctx.message.text.split(' ')[1];
-    if (!mdiskLink) return;
+bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
+    let mdiskLink = ctx.message.text.split(' ')[1];
+    let mdiskURL = '';
+    let messageLink = 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
 
-    ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+    if (ctx.message.reply_to_message) {
+        const repliedMessage = ctx.message.reply_to_message.caption || ctx.message.reply_to_message.text;
+        mdiskURL = repliedMessage.match(/(https?:\/\/mdisk[^\s]+)/g);
+
+        if (mdiskURL !== null) {
+            mdiskLink = mdiskURL[0];
+            if (ctx.message.reply_to_message.photo) messageLink = ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id;
+            else messageLink = func.getPostImage();
+        }
+    }
+
+    if (!mdiskLink) return ctx.reply('No URL Found !!');
+
+    const method = ctx.message.reply_to_message ? 'sendPhoto' : 'sendAnimation';
+    ctx.telegram[method](ctx.chat.id, messageLink,
             {
-                caption: `${func.getMdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', !ctx.message.text.includes('mdisk_video'))}`,
+                caption: `${mdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', ctx.message.text.includes('mdisk_ss'))}`,
                 parse_mode: 'MarkdownV2'
             }
     );
