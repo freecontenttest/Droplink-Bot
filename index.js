@@ -305,7 +305,7 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
     const method = ctx.message.reply_to_message ? 'sendPhoto' : 'sendAnimation';
     ctx.telegram[method](ctx.chat.id, messageLink,
             {
-                caption: `${mdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', ctx.message.text.includes('mdisk_ss'))}`,
+                caption: `${func.getMdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', ctx.message.text.includes('mdisk_ss'))}`,
                 parse_mode: 'MarkdownV2'
             }
     );
