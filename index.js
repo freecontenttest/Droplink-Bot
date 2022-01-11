@@ -275,8 +275,12 @@ bot.command('add_screenshot_link', (ctx) => {
     
     let newMessage = method(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
     newMessage = newMessage.replace('Replace\\_Link', func.regExpEscape(screenshotLink));
-
-    ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+    
+    const method = ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
+    let messageLink = 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
+    if (ctx.message.reply_to_message.photo) messageLink = ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id; 
+    
+    ctx.telegram[method](ctx.chat.id, messageLink,
         {
             caption: newMessage,
             parse_mode: isMdiskPost ? 'MarkdownV2' : 'markdown'
