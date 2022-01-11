@@ -2,7 +2,8 @@ require('dotenv').config();
 
 const isAdmin = (ctx) => {
     const fromId = getFromId(ctx)
-    if (!fromId || process.env.SUDO_USERS != fromId) return { success: false , error: '⚠️  This command is Admin only !!!'}
+    const USERS = process.env.SUDO_USERS.split(',');
+    if (!fromId || !USERS.includes(String(fromId))) return { success: false , error: '⚠️  This command is Admin only !!!'};
     else return { success: true }
 };
 
