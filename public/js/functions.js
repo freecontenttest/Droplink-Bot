@@ -85,6 +85,45 @@ const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
     return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
 };
 
+const getPostImage = () => {
+    const postImagesArr = [
+        'https://wallpapersmug.com/download/2560x1600/1e31d7/hot-anime-girl-and-cookiie.jpg',
+        'http://cdn23.us1.fansshare.com/photos/hdwallpapers-moviemobile/cartoon-girl-pictures-hd-wallpaper-hot-522110899.jpg',
+        'https://static7.depositphotos.com/1007989/747/i/600/depositphotos_7476302-stock-photo-girl-holding-a-rose.jpg',
+        'https://p4.wallpaperbetter.com/wallpaper/77/337/176/beautiful-sexy-art-blue-black-hd-wallpaper-preview.jpg',
+        'https://c4.wallpaperflare.com/wallpaper/93/786/463/anime-1920x1080-art-wallpaper-preview.jpg',
+        'https://wallpaper.dog/large/20499482.jpg',
+        'https://cdn.wallpapersafari.com/76/83/7DzuGx.jpg',
+        'https://cutewallpaper.org/21/sexy-wonder-woman-wallpaper/Hot-and-Sizzling-HD-Cartoon-World-1000.jpg',
+        'https://www.wallpapertip.com/wmimgs/181-1818539_hot-cartoon-wallpaper-49-group-wallpapers.jpg',
+        'https://p4.wallpaperbetter.com/wallpaper/171/571/683/girl-sexy-anime-pretty-blonde-hd-wallpaper-preview.jpg',
+        'http://4everstatic.com/pictures/850xX/cartoons/anime-and-fantasy/sexy-anime-girl,-black-underwear-196092.jpg',
+        'https://www.pngfind.com/pngs/m/304-3042076_car-lady-car-female-model-png-transparent-png.png',
+        'https://www.pikpng.com/pngl/m/126-1268896_megan-fox-png-image-megan-fox-transparent-png.png',
+        'https://w7.pngwing.com/pngs/883/534/png-transparent-girl-computer-file-woman-girl-people-girls-car.png',
+        'https://cdn.pixabay.com/photo/2020/03/01/11/06/retro-pin-up-girls-4892347_1280.png',
+        'http://4everstatic.com/pictures/850xX/cartoons/cartoon-woman,-sexy-blonde-182454.jpg',
+        'http://3.bp.blogspot.com/-zuDzp8oVj-o/TYv70ReAAiI/AAAAAAAABIw/OfUaFCzz6Yo/s1600/Minitokyo_Anime_Wallpapers_Onegai_Teacher_3073_.jpg',
+        'https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77700951146-692x376.jpg',
+        'https://c4.wallpaperflare.com/wallpaper/373/589/76/anime-babes-cleavage-girl-wallpaper-preview.jpg',
+        'http://2.bp.blogspot.com/-fD_YOV9O6Ow/UbBw21Co7sI/AAAAAAAADbE/2AVdOCWlKjA/s1600/Sexy+ecchi+ANime+www.animefullfights.com.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/e/89/anime-girl-sexy-erotic-gray-hair-long-hair-azur-lane-formi-2.jpg',
+        'https://animegrill.com/wp-content/uploads/2021/08/Suguha-Kirigaya-from-Sword-Art-Online.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/2/d5/anime-girl-sexy-erotic-redhead-long-hair-erza-scarlet-fairy.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/d/74/anime-girl-sexy-erotic-brunette-long-hair-lingerie-underwe-5.jpg',
+        'https://xxgasm.com/wp-content/upload/2021/03/naked_anime-9893.jpg',
+        'https://raikou2.donmai.us/sample/1a/ba/sample-1aba0ba9c93c71cd7fe15f65b9693106.jpg',
+        'https://img5.goodfon.com/original/1366x768/2/21/anime-girl-sexy-erotic-white-hair-long-hair-lingerie-underwe.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/b/c0/anime-girl-sexy-azur-lane-dido-breasts-boobs-pretty-beautifu.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/8/da/anime-girl-sexy-erotic-dark-blue-hair-long-hair-bikini-breas.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/1/99/anime-girl-sexy-erotic-brunette-long-hair-bikini-swimsuit-br.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/0/8a/anime-girl-sexy-erotic-blonde-long-hair-azur-lane-algerie-bi.jpg',
+        'https://img5.goodfon.com/wallpaper/nbig/2/fc/belyi-fon-devushka-bikini.jpg'
+    ];
+    
+    return postImagesArr[Math.floor(Math.random()*postImagesArr.length)];
+};
+
 module.exports = {
     isAdmin,
     sendReply,
@@ -92,5 +131,6 @@ module.exports = {
     formatBytes,
     getCaption,
     getMdiskCaption,
-    regExpEscape
+    regExpEscape,
+    getPostImage
 };
