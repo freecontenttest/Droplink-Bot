@@ -347,7 +347,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
     if ((ctx.message.text).includes('note')) return ctx.reply('note accepted');
 
     const URL = ctx.message.text.split(' ')[1];
-    const URL2 = ctx.message.text.split(' ')[2]
+    const URL2 = ctx.message.text.split(' ')[2] || '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.text.match(urlRegex);
 
@@ -355,7 +355,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
         const isDropLink = ctx.message.text.includes('droplink');
         
         // check in db exists or not
-        const results = await db[isDropLink ? 'getDataByOrgUrl' : 'getDataByDroplink']({ params: { [isDropLink ? 'url' : 'droplink'] : `${URL}` } });
+        const results = await db.getDataByOrgUrl({ params: { url: `${isDropLink ? URL : URL2}` } });
         if (results.error) {
             return ctx.reply(results.error.msg);
         }
