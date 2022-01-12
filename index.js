@@ -2,7 +2,7 @@ const { Telegraf } = require('telegraf');
 require('dotenv').config();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-const axios = require('axios');
+const axios = require('axios').default;
 const path = require('path');
 
 const ffmpeg = require('fluent-ffmpeg');
