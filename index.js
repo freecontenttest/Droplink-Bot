@@ -364,7 +364,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
         const isDropLink = ctx.message.text.includes('droplink')
         const token = isDropLink ? process.env.DROPLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN;
         const endpoint = isDropLink ? 'droplink.co' : 'shorturllink.in';
-        const finalURL = isDropLink ? `https://droplink.co/api?api=${token}&url=${linkToShort}` : `https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${linkToShort}`;
+        const finalURL = isDropLink ? `https://droplink.co/api?api=${token}&url=${linkToShort}` : `https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${linkToShort}&format=json`;
         console.log('finalURL====', finalURL)
 //         const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
 //         console.log('apiurl===', apiURL);
