@@ -328,7 +328,7 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
     );
 });
 
-bot.command('short_to_droplink', async (ctx) => {
+bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
     
@@ -360,8 +360,12 @@ bot.command('short_to_droplink', async (ctx) => {
 
         const uniqID = (new Date()).getTime().toString(36);
         const linkToShort = `https://droplink-bot.herokuapp.com/${uniqID}`;
+        
+        const isDropLink = ctx.message.text.includes('droplink')
+        const token = isDropLink ? process.env.DROPLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN;
+        const apiUrl = isDropLink ? 'droplink.co' : 'shorturllink.in';
 
-        const response = await axios.get(`https://droplink.co/api?api=${process.env.DROPLINK_API_TOKEN}&url=${linkToShort}`);
+        const response = await axios.get(`https://${apiUrl}/api?api=${token}&url=${linkToShort}`);
         if (response.data.status === 'success') {
             db.createData({ body: [response.data.shortenedUrl, URL, uniqID, video_name, video_size, video_duration] })
                 .then((res) => {
@@ -370,12 +374,15 @@ bot.command('short_to_droplink', async (ctx) => {
                         return console.log('errr', err);
                     }
                     ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id + 1);
-                    ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+                    await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
                         {
                             caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
                             parse_mode: 'markdown'
                         }
                     );
+                    await ctx.reply(`\`${response.data.shortenedUrl}\``, {
+                        parse_mode: 'markdown'
+                    });
                 })
                 .catch(err => {
                     ctx.reply(`error===${err}`);
