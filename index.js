@@ -368,7 +368,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
         const response = await axios.get(`https://${apiUrl}/api?api=${token}&url=${linkToShort}`);
         if (response.data.status === 'success') {
             db.createData({ body: [response.data.shortenedUrl, URL, uniqID, video_name, video_size, video_duration] })
-                .then((res) => {
+                .then(async (res) => {
                     if (res.err) {
                         ctx.reply('Something went wrong !!');
                         return console.log('errr', err);
