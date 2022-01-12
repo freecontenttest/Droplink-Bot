@@ -363,9 +363,11 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
         
         const isDropLink = ctx.message.text.includes('droplink')
         const token = isDropLink ? process.env.DROPLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN;
-        const apiUrl = isDropLink ? 'droplink.co' : 'shorturllink.in';
-
-        const response = await axios.get(`https://${apiUrl}/api?api=${token}&url=${linkToShort}`);
+        const endpoint = isDropLink ? 'droplink.co' : 'shorturllink.in';
+        const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
+        console.log('apiurl===', apiURL)
+        
+        const response = await axios.get(apiURL);
         if (response.data.status === 'success') {
             db.createData({ body: [response.data.shortenedUrl, URL, uniqID, video_name, video_size, video_duration] })
                 .then(async (res) => {
