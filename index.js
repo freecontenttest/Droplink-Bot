@@ -331,13 +331,13 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
 bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
-    
+
     await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
-    
+
     let video_name = 'Telegram : @my_channels_list_official';
     let video_size = 0;
     let video_duration = 0;
-    
+
     if (ctx.message.reply_to_message && ctx.message.reply_to_message.video) {
         video_name = ctx.message.reply_to_message.video.file_name ? ctx.message.reply_to_message.video.file_name : video_name;
         video_size = ctx.message.reply_to_message.video.file_size;
@@ -360,35 +360,41 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
 
         const uniqID = (new Date()).getTime().toString(36);
         const linkToShort = `https://droplink-bot.herokuapp.com/${uniqID}`;
-        
+
         const isDropLink = ctx.message.text.includes('droplink')
         const token = isDropLink ? process.env.DROPLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN;
         const endpoint = isDropLink ? 'droplink.co' : 'shorturllink.in';
         const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
         console.log('apiurl===', apiURL)
-        
+
         const response = await axios.get(apiURL);
-        if (response.data.status === 'success') {
-            db.createData({ body: [response.data.shortenedUrl, URL, uniqID, video_name, video_size, video_duration] })
-                .then(async (res) => {
-                    if (res.err) {
-                        ctx.reply('Something went wrong !!');
-                        return console.log('errr', err);
-                    }
-                    ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id + 1);
-                    await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
-                        {
-                            caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
-                            parse_mode: 'markdown'
+        try {
+            if (response.data.status === 'success') {
+                db.createData({ body: [response.data.shortenedUrl, URL, uniqID, video_name, video_size, video_duration] })
+                    .then(async (res) => {
+                        if (res.err) {
+                            ctx.reply('Something went wrong !!');
+                            return console.log('errr', err);
                         }
-                    );
-                    await ctx.reply(`\`${response.data.shortenedUrl}\``, {
-                        parse_mode: 'markdown'
+                        ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id + 1);
+                        await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+                            {
+                                caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
+                                parse_mode: 'markdown'
+                            }
+                        );
+                        await ctx.reply(`\`${response.data.shortenedUrl}\``, {
+                            parse_mode: 'markdown'
+                        });
+                    })
+                    .catch(err => {
+                        ctx.reply(`error===${err}`);
                     });
-                })
-                .catch(err => {
-                    ctx.reply(`error===${err}`);
-                });
+            }
+        }
+        catch (err) {
+            console.log('err--', err)
+            throw err;
         }
     } else {
         ctx.reply('Please send a valid link to be shorten !!!')
