@@ -347,12 +347,15 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
     if ((ctx.message.text).includes('note')) return ctx.reply('note accepted');
 
     const URL = ctx.message.text.split(' ')[1];
+    const URL2 = ctx.message.text.split(' ')[2]
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.text.match(urlRegex);
 
     if (shortURL !== null && shortURL.length) {
+        const isDropLink = ctx.message.text.includes('droplink');
+        
         // check in db exists or not
-        const results = await db.getDataByOrgUrl({ params: { url: `${URL}` } });
+        const results = await db[isDropLink ? 'getDataByOrgUrl' : 'getDataByDroplink']({ params: { [isDropLink ? 'url' : 'droplink'] : `${URL}` } });
         if (results.error) {
             return ctx.reply(results.error.msg);
         }
@@ -361,15 +364,14 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
         const uniqID = (new Date()).getTime().toString(36);
         const linkToShort = `https://droplink-bot.herokuapp.com/${uniqID}`;
 
-        const isDropLink = ctx.message.text.includes('droplink')
         const token = isDropLink ? process.env.DROPLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN;
         const endpoint = isDropLink ? 'droplink.co' : 'shorturllink.in';
         const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
         
         try {
-            const response = await axios.get(apiURL);
+            const response = isDropLink ? await axios.get(apiURL) : { data: { status: 'success', shortenedUrl: '' } };
             if (response.data.status === 'success') {
-                db.createData({ body: [response.data.shortenedUrl, URL, uniqID, video_name, video_size, video_duration] })
+                db.createData({ body: [response.data.shortenedUrl, (isDropLink ? URL : URL2), uniqID, video_name, video_size, video_duration] })
                     .then(async (res) => {
                         if (res.err) {
                             ctx.reply('Something went wrong !!');
