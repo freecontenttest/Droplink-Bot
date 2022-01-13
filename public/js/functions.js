@@ -25,7 +25,7 @@ const sendReply = (ctx, results) => {
     }
     if (results.total > 0) {
         const res = results.data[0];
-        ctx.reply(`*Showing results from DB*\n\n*ID :* \`${res.id}\`\n\n*Uniq ID :* \`${res.uniq_id}\`\n\n*Original URL :* \`${res.org_url}\`\n\n*Droplink :* \`${res.droplink}\`\n\n*Video Metadata *{\n      *Name :* \`${res.video_name}\`\n      *Size :*  \`${formatBytes(res.video_size)}\`\n      *Duration :*  \`${secondsToHms(res.video_duration)}\`\n}`, {
+        ctx.reply(`*Showing results from DB*\n\n*ID :* \`${res.id || 'new'}\`\n\n*Uniq ID :* \`${res.uniq_id}\`\n\n*Original URL :* \`${res.org_url}\`\n\n*Droplink :* \`${res.droplink}\`\n\n*Video Metadata *{\n      *Name :* \`${res.video_name}\`\n      *Size :*  \`${formatBytes(res.video_size)}\`\n      *Duration :*  \`${secondsToHms(res.video_duration)}\`\n}`, {
             parse_mode: 'markdown'
         });
     } else {
