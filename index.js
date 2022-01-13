@@ -170,9 +170,9 @@ bot.command('update_data_by', async (ctx) => {
     const params = ctx.message.text.split('  ');
     const update_data_by = params[1];
     const update_data_value = params[2];
-    const prev_value = params[3];
+    const id = parseInt(params[3]);
 
-    const results = await db.updateDataBy({ body: [update_data_by, update_data_value, prev_value] });
+    const results = await db.updateDataBy({ body: [update_data_by, update_data_value, id] });
     console.log('update-resylts', results);
     ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id + 1);
 
