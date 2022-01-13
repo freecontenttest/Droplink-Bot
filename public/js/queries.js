@@ -86,10 +86,10 @@ const updateData = async (request) => {
 
 const updateDataBy = async (request) => {
     console.log('updateDataBy', request.body);
-    const [ update_data_by, update_data_value, prev_value ] = request.body;
+    const [ update_data_by, update_data_value, id ] = request.body;
 
     try {
-        response = await pool.query(`UPDATE tg_droplink_data SET ${update_data_by} = $1 WHERE ${update_data_by} = $2`, [update_data_value, prev_value]);
+        response = await pool.query(`UPDATE tg_droplink_data SET ${update_data_by} = $1 WHERE id = $2`, [update_data_value, id]);
         return { data: response };
     } catch (error) {
         throw { error: { msg: 'Something Went Wrong !!!', err: error } };
