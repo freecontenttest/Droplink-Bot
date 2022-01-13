@@ -384,9 +384,17 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
                                 parse_mode: 'markdown'
                             }
                         );
-                        await ctx.reply(`\`${response.data.shortenedUrl}\``, {
-                            parse_mode: 'markdown'
-                        });
+                        const messageDetails = [
+                            { 
+                                uniq_id: uniqID,
+                                org_url: (isDropLink ? URL : URL2),
+                                droplink: response.data.shortenedUrl, 
+                                video_name: video_name,
+                                video_size: video_size,
+                                video_duration: video_duration
+                            }
+                        ];
+                        return await func.sendReply(ctx, { data: messageDetails });
                     })
                     .catch(err => {
                         ctx.reply(`error===${err}`);
