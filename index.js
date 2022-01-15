@@ -328,6 +328,22 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
     );
 });
 
+bot.command('hello', async (ctx) => {
+    const url = ctx.message.text.split(' ')[1];
+    console.log('url===', url);
+    const params = {
+        api: '8877d9afc0127597a60bc91b53d0df5e66691582',
+        url: url
+    };
+    try {
+        const response = await axios.get(`https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${params.url}`);
+        console.log('res---hrllo', response)
+    }
+    catch(err) {
+        console.log('err==hrloo', err)
+    }
+});
+
 bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
@@ -394,7 +410,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
                                 video_duration: video_duration
                             }
                         ];
-                        return await func.sendReply(ctx, { data: messageDetails });
+                        return await func.sendReply(ctx, { data: messageDetails, total: 1 });
                     })
                     .catch(err => {
                         ctx.reply(`error===${err}`);
