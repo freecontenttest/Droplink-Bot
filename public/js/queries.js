@@ -17,6 +17,17 @@ const getData = async () => {
     };
 };
 
+const searchData = async (request) => {
+    console.log('searchData', request.value);
+    const value = request.value;
+    try {
+        response = await pool.query(`SELECT * FROM tg_droplink_data WHERE ${value} in (droplink, org_url)`);
+        return { data: response.rows, total: response.rows.length };
+    } catch (error) {
+        throw { error: { msg: 'Something Went Wrong !!!', err: error } };
+    };
+};
+
 const getDataById = async (request) => {
     console.log('getDataById', request.params.id);
     const id = parseInt(request.params.id);
