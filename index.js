@@ -337,8 +337,9 @@ bot.command('hello', async (ctx) => {
         api: '8877d9afc0127597a60bc91b53d0df5e66691582',
         url: url
     };
+    const APIURL = `https://shorturllink.in/api?api=${params.api}&url=${params.url}&alias=CustomAlias`;
     try {
-        const response = await https.get(`https://shorturllink.in/api`, params);
+        const response = await axios.get(APIURL);
         console.log('res---hrllo', response)
     }
     catch(err) {
