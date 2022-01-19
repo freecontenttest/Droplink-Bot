@@ -377,8 +377,8 @@ bot.command(['short_to_droplink', 'short_to_shorturllink', 'short_to_pdisklink']
     const shortURL = ctx.message.text.match(urlRegex);
 
     if (shortURL !== null && shortURL.length) {
-        const isDropLink = ctx.message.text.includes('droplink');
-        const isPdiskLink = ctx.message.text.includes('pdisklink');
+        const isDropLink = ctx.message.text.includes('short_to_droplink');
+        const isPdiskLink = ctx.message.text.includes('short_to_pdisklink');
         
         // check in db exists or not
         const results = await db.getDataByOrgUrl({ params: { url: `${(isDropLink || isPdiskLink) ? URL : URL2}` } });
