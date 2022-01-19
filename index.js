@@ -338,7 +338,7 @@ bot.command('hello', async (ctx) => {
         url: url
     };
     try {
-        const response = await https.get(`https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${params.url}`);
+        const response = await https.get(`https://shorturllink.in/api`, params);
         console.log('res---hrllo', response)
     }
     catch(err) {
