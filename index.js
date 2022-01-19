@@ -353,7 +353,7 @@ bot.command('hello', async (ctx) => {
     }
 });
 
-bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
+bot.command(['short_to_droplink', 'short_to_shorturllink', 'short_to_pdisklink'], async (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
 
@@ -378,9 +378,10 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
 
     if (shortURL !== null && shortURL.length) {
         const isDropLink = ctx.message.text.includes('droplink');
+        const isPdiskLink = ctx.message.text.includes('pdisklink');
         
         // check in db exists or not
-        const results = await db.getDataByOrgUrl({ params: { url: `${isDropLink ? URL : URL2}` } });
+        const results = await db.getDataByOrgUrl({ params: { url: `${(isDropLink || isPdiskLink) ? URL : URL2}` } });
         if (results.error) {
             return ctx.reply(results.error.msg);
         }
@@ -388,13 +389,12 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
 
         const uniqID = (new Date()).getTime().toString(36);
         const linkToShort = `https://droplink-bot.herokuapp.com/${uniqID}`;
-
-        const token = isDropLink ? process.env.DROPLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN;
-        const endpoint = isDropLink ? 'droplink.co' : 'shorturllink.in';
+        const token = isDropLink ? process.env.DROPLINK_API_TOKEN : (isPdiskLink ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
+        const endpoint = isDropLink ? 'droplink.co' : (isPdiskLink ? 'pdisklink.in' : 'shorturllink.in');
         const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
         
         try {
-            const response = isDropLink ? await axios.get(apiURL) : { data: { status: 'success', shortenedUrl: URL } };
+            const response = (isDropLink || isPdiskLink) ? await axios.get(apiURL) : { data: { status: 'success', shortenedUrl: URL } };
             if (response.data.status === 'success') {
                 db.createData({ body: [response.data.shortenedUrl, (isDropLink ? URL : URL2), uniqID, video_name, video_size, video_duration] })
                     .then(async (res) => {
@@ -412,7 +412,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink'], async (ctx) => {
                         const messageDetails = [
                             { 
                                 uniq_id: uniqID,
-                                org_url: (isDropLink ? URL : URL2),
+                                org_url: ((isDropLink || isPdiskLink) ? URL : URL2),
                                 droplink: response.data.shortenedUrl, 
                                 video_name: video_name,
                                 video_size: video_size,
