@@ -375,7 +375,8 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
         const results = await db.searchData({ value: String(URL) });
         console.log('results===>',results);
         if (results.total > 0) {
-            const commandOf = ctx.message.text.split('_')[1];
+            const command = ctx.message.text.split(' ')[0];
+            const commandOf = command.split(' ')[1];
             console.log('commandOf===>',commandOf);
             const alreadyShorten = results.data[0].droplink.includes(commandOf);
             console.log('alreadyShorten===>',alreadyShorten);
