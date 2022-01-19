@@ -338,13 +338,15 @@ bot.command('hello', async (ctx) => {
         url: url
     };
     const APIURL = `https://shorturllink.in/api?api=${params.api}&url=${params.url}`;
+    const APIURL2 = `https://pdisklink.in/api?api=d33a3b527d68cc500e5a710388cc9c5d85026d40&url=${params.url}`;
     try {
-        const response = await axios.get(APIURL, {
-            headers: {
-                Cookie: "csrfToken=792194576d97e6f23980988fd35b69ea7ea61aaa846ada096c057c4c8bb6f56f922c9d9840b01db208526500f272078eb6286b52d740a530d55c250aa2484882; AppSession=531a50219433d9802f91806ef0b18ed9"
-            }
-        });
-        console.log('res---hrllo', response)
+//         const response = await axios.get(APIURL, {
+//             headers: {
+//                 Cookie: "csrfToken=792194576d97e6f23980988fd35b69ea7ea61aaa846ada096c057c4c8bb6f56f922c9d9840b01db208526500f272078eb6286b52d740a530d55c250aa2484882; AppSession=531a50219433d9802f91806ef0b18ed9"
+//             }
+//         });
+        const response = await axios.get(APIURL2);
+        console.log('res---hrllo', response);
     }
     catch(err) {
         console.log('err==hrloo', err)
