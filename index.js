@@ -385,7 +385,7 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
             if (alreadyShorten) {
                 await func.sendReply(ctx, results);
             } else {
-                const linkToShort = `https://droplink-bot.herokuapp.com/${results.data[0].id}`;
+                const linkToShort = `https://droplink-bot.herokuapp.com/${results.data[0].uniq_id}`;
                 const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
                 const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
                 const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
