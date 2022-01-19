@@ -364,15 +364,41 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     const shortURL = ctx.message.text.match(urlRegex);
     
     if (shortURL !== null && shortURL.length) {
-        const isDropLink = ctx.message.text.includes('get_droplink');
-        const isPdiskLink = ctx.message.text.includes('get_shorturllink');
+        const isDropShortCmd = ctx.message.text.includes('get_droplink');
+        console.log('isDropShortCmd===>',isDropShortCmd);
+        const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
+        console.log('isPdiskShortCmd===>',isPdiskShortCmd);
+        const isShortLinkCmd = ctx.message.text.includes('get_shorturllink');
+        console.log('isShortLinkCmd===>',isShortLinkCmd);
         
         // check in db exists or not
         const results = await db.searchData({ value: String(URL) });
-        if (results.error) {
-            return ctx.reply(results.error.msg);
-        }
-        if (results.total > 0) return func.sendReply(ctx, results);
+        console.log('results===>',results);
+        if (results.total > 0) {
+            const commandOf = ctx.message.text.split('_')[1];
+            console.log('commandOf===>',commandOf);
+            const alreadyShorten = results.data[0].droplink.includes(commandOf);
+            console.log('alreadyShorten===>',alreadyShorten);
+            
+            if (alreadyShorten) {
+                await func.sendReply(ctx, results);
+            } else {
+                const linkToShort = `https://droplink-bot.herokuapp.com/${results.data[0].id}`;
+                const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
+                const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
+                const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
+                console.log('apiURL===>',apiURL);
+                const response = await axios.get(apiURL);
+                if (response.data.status === 'success') {
+                    await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+                        {
+                              caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
+                              parse_mode: 'markdown'
+                        }
+                    );
+                }
+            }
+        } 
     }
 });
 
