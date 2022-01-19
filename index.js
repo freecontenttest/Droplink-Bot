@@ -353,6 +353,29 @@ bot.command('hello', async (ctx) => {
     }
 });
 
+bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) => {
+    const isAllowed = func.isAdmin(ctx);;
+    if (!isAllowed.success) return ctx.reply(isAllowed.error);
+    
+    await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
+    
+    const URL = ctx.message.text.split(' ')[1];
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const shortURL = ctx.message.text.match(urlRegex);
+    
+    if (shortURL !== null && shortURL.length) {
+        const isDropLink = ctx.message.text.includes('get_droplink');
+        const isPdiskLink = ctx.message.text.includes('get_shorturllink');
+        
+        // check in db exists or not
+        const results = await db.searchData({ value: URL });
+        if (results.error) {
+            return ctx.reply(results.error.msg);
+        }
+        if (results.total > 0) return func.sendReply(ctx, results);
+    }
+});
+
 bot.command(['short_to_droplink', 'short_to_shorturllink', 'short_to_pdisklink'], async (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
