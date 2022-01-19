@@ -120,6 +120,7 @@ const deleteData = async (request) => {
 
 module.exports = {
     getData,
+    searchData,
     getDataById,
     getDataByUniqId,
     getDataByOrgUrl,
