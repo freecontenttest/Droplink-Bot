@@ -328,6 +328,8 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
     );
 });
 
+const https = require('https');
+
 bot.command('hello', async (ctx) => {
     const url = ctx.message.text.split(' ')[1];
     console.log('url===', url);
@@ -336,7 +338,7 @@ bot.command('hello', async (ctx) => {
         url: url
     };
     try {
-        const response = await axios.get(`https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${params.url}`);
+        const response = await https.get(`https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${params.url}`);
         console.log('res---hrllo', response)
     }
     catch(err) {
