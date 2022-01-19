@@ -337,14 +337,8 @@ bot.command('hello', async (ctx) => {
         api: '8877d9afc0127597a60bc91b53d0df5e66691582',
         url: url
     };
-    const APIURL = `https://shorturllink.in/api?api=8877d9afc0127597a60bc91b53d0df5e66691582&url=${params.url}`;
-    const APIURL2 = `https://pdisklink.in/api?api=d33a3b527d68cc500e5a710388cc9c5d85026d40&url=${params.url}`;
+    const APIURL = `https://shorturllink.in/st?api=${params.api}&url=${params.url}`;
     try {
-//         const response = await axios.get(APIURL, {
-//             headers: {
-//                 Cookie: "csrfToken=792194576d97e6f23980988fd35b69ea7ea61aaa846ada096c057c4c8bb6f56f922c9d9840b01db208526500f272078eb6286b52d740a530d55c250aa2484882; AppSession=531a50219433d9802f91806ef0b18ed9"
-//             }
-//         });
         const response = await axios.get(APIURL);
         console.log('res---hrllo', response);
     }
@@ -358,29 +352,21 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
     
     await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
-    
     const URL = ctx.message.text.split(' ')[1];
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.text.match(urlRegex);
     
     if (shortURL !== null && shortURL.length) {
         const isDropShortCmd = ctx.message.text.includes('get_droplink');
-        console.log('isDropShortCmd===>',isDropShortCmd);
         const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
-        console.log('isPdiskShortCmd===>',isPdiskShortCmd);
         const isShortLinkCmd = ctx.message.text.includes('get_shorturllink');
-        console.log('isShortLinkCmd===>',isShortLinkCmd);
         
         // check in db exists or not
         const results = await db.searchData({ value: String(URL) });
-        console.log('results===>',results);
         if (results.total > 0) {
             const command = ctx.message.text.split(' ')[0];
-            console.log('command===>',command);
             const commandOf = command.split('_')[1];
-            console.log('commandOf===>',commandOf);
             const alreadyShorten = results.data[0].droplink.includes(commandOf);
-            console.log('alreadyShorten===>',alreadyShorten);
             
             if (alreadyShorten) {
                 await func.sendReply(ctx, results);
@@ -389,7 +375,7 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
                 const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
                 const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
                 const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
-                console.log('apiURL===>',apiURL);
+                
                 const response = await axios.get(apiURL);
                 if (response.data.status === 'success') {
                     await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
