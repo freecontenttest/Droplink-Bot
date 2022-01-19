@@ -368,7 +368,7 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
         const isPdiskLink = ctx.message.text.includes('get_shorturllink');
         
         // check in db exists or not
-        const results = await db.searchData({ value: URL });
+        const results = await db.searchData({ value: String(URL) });
         if (results.error) {
             return ctx.reply(results.error.msg);
         }
