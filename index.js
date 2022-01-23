@@ -399,13 +399,13 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
                 const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
                 const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
                 const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
-                await func.shortLink(ctx, apiURL);             
+                await shortLink(ctx, apiURL);             
             }
         } else {
             const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
             const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
             const apiURL = `https://${endpoint}/api?api=${token}&url=${URL}`;
-            await func.shortLink(ctx, apiURL);
+            await shortLink(ctx, apiURL);
         }
     }
 });
