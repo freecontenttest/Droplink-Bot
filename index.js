@@ -357,13 +357,13 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     const shortURL = ctx.message.text.match(urlRegex);
     const compareTo = ['shorturllink', 'pdisklink', 'droplink'];
     
+    const isDropShortCmd = ctx.message.text.includes('get_droplink');
+    const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
+    
     if (shortURL !== null && shortURL.length) {
         URL = shortURL.find(url => compareTo.some(str => url.includes(str))) || '';
         if (!URL) URL = ctx.message.text.split(' ')[1];
-        
-        const isDropShortCmd = ctx.message.text.includes('get_droplink');
-        const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
-        
+
         // check in db exists or not
         const results = await db.searchData({ value: String(URL) });
         if (results.total > 0) {
@@ -378,21 +378,14 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
                 const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
                 const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
                 const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
-                
-                const method = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
-                const messageLink = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id : 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
-                
-                const response = await axios.get(apiURL);
-                if (response.data.status === 'success') {
-                    await ctx.telegram[method](ctx.chat.id, messageLink,
-                        {
-                              caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
-                              parse_mode: 'markdown'
-                        }
-                    );
-                }
+                await func.shortLink(ctx, apiURL);             
             }
-        } 
+        } else {
+            const token = isDropShortCmd ? process.env.DROPLINK_API_TOKEN : (isPdiskShortCmd ? process.env.PDISKLINK_API_TOKEN : process.env.SHORTURLLINK_API_TOKEN);
+            const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
+            const apiURL = `https://${endpoint}/api?api=${token}&url=${URL}`;
+            await func.shortLink(ctx, apiURL);
+        }
     }
 });
 
