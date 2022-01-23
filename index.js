@@ -348,18 +348,21 @@ bot.command('hello', async (ctx) => {
 });
 
 bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) => {
-    const isAllowed = func.isAdmin(ctx);;
+    const isAllowed = func.isAdmin(ctx);
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
     
     await ctx.telegram.sendAnimation(ctx.chat.id, 'CAACAgUAAxkBAAE08vdhnjeGdMhMHh4XH1PpyRoBQVba7AACrwEAAkglCVeK2COVlaQ2mSIE');
-    const URL = ctx.message.text.split(' ')[1];
+    let URL =  ctx.message.text.split(' ')[1] || ctx.message.reply_to_message.text || ctx.message.reply_to_message.caption || '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.text.match(urlRegex);
+    const compareTo = ['shorturllink', 'pdisklink', 'droplink'];
     
     if (shortURL !== null && shortURL.length) {
+        URL = shortURL.find(url => compareTo.some(str => url.includes(str))) || '';
+        if (!URL) return ctx.reply('URL matching not found !!');
+        
         const isDropShortCmd = ctx.message.text.includes('get_droplink');
         const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
-        const isShortLinkCmd = ctx.message.text.includes('get_shorturllink');
         
         // check in db exists or not
         const results = await db.searchData({ value: String(URL) });
@@ -376,9 +379,12 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
                 const endpoint = isDropShortCmd ? 'droplink.co' : (isPdiskShortCmd ? 'pdisklink.in' : 'shorturllink.in');
                 const apiURL = `https://${endpoint}/api?api=${token}&url=${linkToShort}`;
                 
+                const method = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
+                const messageLink = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id : 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
+                
                 const response = await axios.get(apiURL);
                 if (response.data.status === 'success') {
-                    await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+                    await ctx.telegram[method](ctx.chat.id, messageLink,
                         {
                               caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
                               parse_mode: 'markdown'
