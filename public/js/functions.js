@@ -89,7 +89,7 @@ const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
     return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
 };
 
-const shortLink = (ctx, apiURL) => {
+const shortLink = async (ctx, apiURL) => {
     const message = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id : 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
     const method = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
     
