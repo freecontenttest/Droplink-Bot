@@ -90,9 +90,12 @@ const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
 };
 
 const shortLink = (ctx, apiURL) => {
+    const message = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? ctx.message.reply_to_message.photo[ctx.message.reply_to_message.photo.length - 1].file_id : 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
+    const method = ctx.message.reply_to_message && ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
+    
     const response = await axios.get(apiURL);
     if (response.data.status === 'success') {
-        await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+        await ctx.telegram[method](ctx.chat.id, message,
             {
                   caption: getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
                   parse_mode: 'markdown'
