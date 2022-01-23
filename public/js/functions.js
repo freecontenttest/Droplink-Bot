@@ -89,6 +89,18 @@ const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
     return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
 };
 
+const shortLink = (ctx, apiURL) => {
+    const response = await axios.get(apiURL);
+    if (response.data.status === 'success') {
+        await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+            {
+                  caption: getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
+                  parse_mode: 'markdown'
+            }
+        );
+    } else ctx.reply('Something went wrong with short link api!!');
+};
+
 const getPostImage = () => {
     const postImagesArr = [
         'https://wallpapersmug.com/download/2560x1600/1e31d7/hot-anime-girl-and-cookiie.jpg',
@@ -136,5 +148,6 @@ module.exports = {
     getCaption,
     getMdiskCaption,
     regExpEscape,
+    shortLink,
     getPostImage
 };
