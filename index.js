@@ -359,7 +359,7 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     
     if (shortURL !== null && shortURL.length) {
         URL = shortURL.find(url => compareTo.some(str => url.includes(str))) || '';
-        if (!URL) return ctx.reply('URL matching not found !!');
+        if (!URL) URL = ctx.message.text.split(' ')[1];
         
         const isDropShortCmd = ctx.message.text.includes('get_droplink');
         const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
