@@ -376,7 +376,6 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     let URL =  ctx.message.text.split(' ')[1] || ctx.message.reply_to_message.text || ctx.message.reply_to_message.caption || '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.text.match(urlRegex);
-    console.log('shortURL==>', shortURL);
     const compareTo = ['shorturllink', 'pdisklink', 'droplink'];
     
     const isDropShortCmd = ctx.message.text.includes('get_droplink');
@@ -385,11 +384,9 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     if (shortURL !== null && shortURL.length) {
         URL = shortURL.find(url => compareTo.some(str => url.includes(str))) || '';
         if (!URL) URL = ctx.message.text.split(' ')[1];
-        console.log('URL==>', URL);
 
         // check in db exists or not
         const results = await db.searchData({ value: String(URL) });
-        console.log('results==>', results);
         if (results.total > 0) {
             const command = ctx.message.text.split(' ')[0];
             const commandOf = command.split('_')[1];
