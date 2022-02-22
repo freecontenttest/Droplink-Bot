@@ -365,7 +365,10 @@ bot.command('hello', async (ctx) => {
         console.log('res---hrllo', response);
     }
     catch(err) {
-        console.log('err==hrloo', err)
+        console.log('err==hrloo', err);
+        console.log('err==data', err.response.data);
+        console.log('err==status', err.response.status);
+        console.log('err==headers', err.response.headers);
     }
 });
 
