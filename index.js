@@ -239,13 +239,31 @@ const shortLink = async (ctx, apiURL) => {
 
 */
 
-bot.command('get_formatted_post', (ctx) => {
+bot.command('get_formatted_post', async (ctx) => {
     const number = ctx.message.text.split(' ')[1];
     if (!number || isNaN(number) || number > 3 || number == 0) return ctx.reply('Something went wrong with command !!');
+    
+    await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+        {
+            caption: func.getCaption('https://demo.co/demo', 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true, number),
+            parse_mode: 'HTML'
+        }
+    );
+});
 
-    ctx.reply(func.getCaption('https://demo.co/demo', 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true, number), {
-        parse_mode: 'HTML'
-    });
+bot.command('post_from_details', async (ctx) => {
+    const link = ctx.message.text.split(' ')[1];
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const shortURL = ctx.message.text.match(urlRegex) || ['https://nothing.here'];
+    const compareTo = ['shorturllink', 'pdisklink', 'droplink', 'urlsopen'];
+    if (!link || !shortURL.find(url => compareTo.some(str => url.includes(str)))) return ctx.reply('Something went wrong with command !!');
+
+    await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
+        {
+            caption: func.getCaption(link, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
+            parse_mode: 'HTML'
+        }
+    );
 });
 
 bot.command('animation_to_photo', (ctx) => {
@@ -389,7 +407,7 @@ bot.command(['get_droplink', 'get_shorturllink', 'get_pdisklink'], async (ctx) =
     let URL =  ctx.message.text.split(' ')[1] || ctx.message.reply_to_message.text || ctx.message.reply_to_message.caption || '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const shortURL = ctx.message.text.match(urlRegex);
-    const compareTo = ['shorturllink', 'pdisklink', 'droplink'];
+    const compareTo = ['shorturllink', 'urlsopen', 'pdisklink', 'droplink'];
     
     const isDropShortCmd = ctx.message.text.includes('get_droplink');
     const isPdiskShortCmd = ctx.message.text.includes('get_pdisklink');
