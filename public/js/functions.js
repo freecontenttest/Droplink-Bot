@@ -64,20 +64,30 @@ const formatBytes = (bytes, decimals = 2) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
 
-const getCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
-    const isDropLink = shortenLink.includes('droplink');
-    const isPdiskLink = shortenLink.includes('pdisklink');
+const regExpEscape = (String) => {
+    return String.replace(/[-[\]{}()*_+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+};
+
+const getCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot = false, formatPostNumber = 0) => {
+    let newShortenLink = shortenLink;
+
+    if (formatPostNumber == 1) {
+        newShortenLink = 'https://droplink.co/demo';
+    } else if (formatPostNumber == 2) {
+        newShortenLink = 'https://shorturllLink.in/demo';
+    } else if (formatPostNumber == 3) {
+        newShortenLink = 'https://pdisklink.in/demo';
+    }
+
+    const isDropLink = newShortenLink.includes('droplink');
+    const isPdiskLink = newShortenLink.includes('pdisklink');
     
     const DEF_CAPTION = '<b><i>🔰  HOW TO WATCH :\n\n➤  Just Install PLAYit App from PlayStore\n➤  🚀 High Speed Download & No Buffering\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📥 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐋𝐢𝐧𝐤𝐬/👀𝐖𝐚𝐭𝐜𝐡 𝐎𝐧𝐥𝐢𝐧𝐞\n\n\n';
-    let URL_CAPTION = `❓️ How To Download From ${isDropLink ? 'Droplink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink / Urlsopen')}\n        (${isDropLink ? 'DropLink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink या  Urlsopen')} से वीडियो कैसे डाउनलोड करे) 👇🏻️\n➤ https://t.me/how_to_download_movie_official/${isDropLink ? 4 : (isPdiskLink ? 8 : 7)}\n\n\n🎬 Video Link\n ➪ ${shortenLink}\n\n\n`;
+    let URL_CAPTION = `❓️ How To Download From ${isDropLink ? 'Droplink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink / Urlsopen')}\n        (${isDropLink ? 'DropLink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink या  Urlsopen')} से वीडियो कैसे डाउनलोड करे) 👇🏻️\n➤ https://t.me/how_to_download_movie_official/${isDropLink ? 4 : (isPdiskLink ? 8 : 7)}\n\n\n🎬 Video Link\n ➪ ${newShortenLink}\n\n\n`;
     if (isScreenshot) URL_CAPTION = '🔞️ Screenshots/Preview/Trailer\n ➪ Replace\\_Link\n\n' + URL_CAPTION;
     const BACKUP_CAPTION = `💠 Backup Channel :\n ➤ ${BACKUP_CHANNEL}\n\n♻️ Other Channels :\n ➤ https://t.me/my_channels_list_official </i></b>`;
     
     return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
-};
-
-const regExpEscape = (String) => {
-    return String.replace(/[-[\]{}()*_+!<=:?.\/\\^$|#\s,]/g, '\\$&');
 };
 
 const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
@@ -88,6 +98,8 @@ const getMdiskCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
     
     return DEF_CAPTION + URL_CAPTION + BACKUP_CAPTION;
 };
+
+
 
 const getPostImage = () => {
     const postImagesArr = [
