@@ -227,7 +227,7 @@ const shortLink = async (ctx, apiURL) => {
         await ctx.telegram[method](ctx.chat.id, message,
             {
                   caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
-                  parse_mode: 'markdown'
+                  parse_mode: 'HTML'
             }
         );
     } else ctx.reply('Something went wrong with short link api!!');
@@ -256,7 +256,7 @@ bot.command('animation_to_photo', (ctx) => {
     ctx.telegram.sendPhoto(ctx.chat.id, fileUrl,
         {
             caption: method(shortURL[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', (isMdiskPost && hasScreenshot)),
-            parse_mode: isMdiskPost ? 'MarkdownV2' : 'markdown'
+            parse_mode: isMdiskPost ? 'MarkdownV2' : 'HTML'
         }
     );
 });
@@ -275,7 +275,7 @@ bot.command('convert_to_text', (ctx) => {
 
     ctx.reply(method(shortURL[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', (isMdiskPost && hasScreenshot)),
         {
-            parse_mode: isMdiskPost ? 'MarkdownV2' : 'markdown',
+            parse_mode: isMdiskPost ? 'MarkdownV2' : 'HTML',
             disable_web_page_preview: true
         }
     );
@@ -304,7 +304,7 @@ bot.command('add_screenshot_link', (ctx) => {
     ctx.telegram[method](ctx.chat.id, messageLink,
         {
             caption: newMessage,
-            parse_mode: isMdiskPost ? 'MarkdownV2' : 'markdown'
+            parse_mode: isMdiskPost ? 'MarkdownV2' : 'HTML'
         }
     );
 });
@@ -467,7 +467,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink', 'short_to_pdisklink']
                         await ctx.telegram.sendAnimation(ctx.chat.id, 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4',
                             {
                                 caption: func.getCaption(response.data.shortenedUrl, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true),
-                                parse_mode: 'markdown'
+                                parse_mode: 'HTML'
                             }
                         );
                         const messageDetails = [
