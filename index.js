@@ -239,6 +239,15 @@ const shortLink = async (ctx, apiURL) => {
 
 */
 
+bot.command('get_formatted_post', (ctx) => {
+    const number = ctx.message.text.split(' ')[1];
+    if (!number || isNaN(number) || number > 3 || number == 0) return ctx.reply('Something went wrong with command !!');
+
+    ctx.reply(getCaption('test', 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true, number), {
+        parse_mode: 'HTML'
+    });
+});
+
 bot.command('animation_to_photo', (ctx) => {
     if (!ctx.message || !ctx.message.reply_to_message || !ctx.message.reply_to_message.caption) return;
     
