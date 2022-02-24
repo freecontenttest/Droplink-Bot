@@ -295,7 +295,7 @@ bot.command('add_screenshot_link', (ctx) => {
     const captionMethod = isMdiskPost ? func.getMdiskCaption : func.getCaption;
     
     let newMessage = captionMethod(allURLs[1], 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', true);
-    newMessage = newMessage.replace('Replace\\_Link', func.regExpEscape(screenshotLink));
+    newMessage = newMessage.replace('Replace\\_Link', isMdiskPost ? func.regExpEscape(screenshotLink) : screenshotLink);
     
     const method = ctx.message.reply_to_message.photo ? 'sendPhoto' : 'sendAnimation';
     let messageLink = 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
