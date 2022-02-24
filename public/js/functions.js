@@ -69,7 +69,7 @@ const getCaption = (shortenLink, BACKUP_CHANNEL, isScreenshot=false) => {
     const isPdiskLink = shortenLink.includes('pdisklink');
     
     const DEF_CAPTION = '<b><i>🔰  HOW TO WATCH :\n\n➤  Just Install PLAYit App from PlayStore\n➤  🚀 High Speed Download & No Buffering\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📥 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐋𝐢𝐧𝐤𝐬/👀𝐖𝐚𝐭𝐜𝐡 𝐎𝐧𝐥𝐢𝐧𝐞\n\n\n';
-    let URL_CAPTION = `❓️ How To Download From ${isDropLink ? 'Droplink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink / Urlsopen')}\n        (${isDropLink ? 'DropLink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink या  Urlsopen')} से वीडियो कैसे डाउनलोड करे) 👇🏻️\n➤ https://t.me/how_to\\_download_movie_official/${isDropLink ? 4 : (isPdiskLink ? 8 : 7)}\n\n\n🎬 Video Link\n ➪ ${shortenLink}\n\n\n`;
+    let URL_CAPTION = `❓️ How To Download From ${isDropLink ? 'Droplink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink / Urlsopen')}\n        (${isDropLink ? 'DropLink' : (isPdiskLink ? 'PdiskLink' : 'ShortUrlLink या  Urlsopen')} से वीडियो कैसे डाउनलोड करे) 👇🏻️\n➤ https://t.me/how_to_download_movie_official/${isDropLink ? 4 : (isPdiskLink ? 8 : 7)}\n\n\n🎬 Video Link\n ➪ ${shortenLink}\n\n\n`;
     if (isScreenshot) URL_CAPTION = '🔞️ Screenshots/Preview/Trailer\n ➪ Replace\\_Link\n\n' + URL_CAPTION;
     const BACKUP_CAPTION = `💠 Backup Channel :\n ➤ ${BACKUP_CHANNEL}\n\n♻️ Other Channels :\n ➤ https://t.me/my_channels_list_official </i></b>`;
     
