@@ -340,8 +340,10 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
     const isAllowed = func.isAdmin(ctx);;
     if (!isAllowed.success) return ctx.reply(isAllowed.error);
     
-    let mdiskLink = ctx.message.text.split(' ')[1];
+    let mdiskLink = '';
     let mdiskURL = '';
+    let mdiskPostCaption = ctx.message.text ? ctx.message.text.split('  ')[1] : '';
+    mdiskPostCaption = mdiskPostCaption ? mdiskPostCaption.split(', ').map(a => a).join('\n\n') : '';
     let messageLink = 'https://telegra.ph/file/b23b9e5ed1107e8cfae09.mp4';
 
     if (ctx.message.reply_to_message) {
@@ -370,7 +372,7 @@ bot.command(['mdisk', 'mdisk_ss'], async (ctx) => {
     const method = ctx.message.reply_to_message ? 'sendPhoto' : 'sendAnimation';
     ctx.telegram[method](ctx.chat.id, messageLink,
             {
-                caption: `${func.getMdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', ctx.message.text.includes('mdisk_ss'))}`,
+                caption: `${func.getMdiskCaption(mdiskLink, 'https://t.me/joinchat/ojOOaC4tqkU5MTVl', ctx.message.text.includes('mdisk_ss'), func.regExpEscape(mdiskPostCaption))}`,
                 parse_mode: 'MarkdownV2'
             }
     );
