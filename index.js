@@ -24,9 +24,9 @@ const express = require('express');
 const app = express();
 
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(function(err, req, res, next) {
-     express.static(path.join(__dirname, "public"));
      console.log('app-use--error--', err);
      res.status(err.status || 500);
      res.end();
