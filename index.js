@@ -24,7 +24,13 @@ const express = require('express');
 const app = express();
 
 app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
+
+app.use(function(err, req, res, next) {
+     express.static(path.join(__dirname, "public"));
+     console.log('app-use--error--', err);
+     res.status(err.status || 500);
+     res.end();
+});
 
 app.get('/', async (req, res) => {
     res.send('Welcome !!');
@@ -33,7 +39,7 @@ app.get('/', async (req, res) => {
 app.get('/:id', async (req, res) => { 
     if ((req.params.id).includes('.')) return;
     
-//     await axios.get(`https://auto-delete-messages-bot.herokuapp.com/`);
+    await axios.get(`https://auto-delete-messages-bot.herokuapp.com/`);
     
     const results = await db.getDataByUniqId(req);
     if (results.total > 0) {
