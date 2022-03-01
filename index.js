@@ -33,7 +33,7 @@ app.get('/', async (req, res) => {
 app.get('/:id', async (req, res) => { 
     if ((req.params.id).includes('.')) return;
     
-    await axios.get(`https://auto-delete-messages-bot.herokuapp.com/`);
+//     await axios.get(`https://auto-delete-messages-bot.herokuapp.com/`);
     
     const results = await db.getDataByUniqId(req);
     if (results.total > 0) {
