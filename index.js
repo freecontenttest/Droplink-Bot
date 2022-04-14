@@ -96,6 +96,11 @@ bot.command('create', async (ctx) => {
     console.log('res', res)
 });
 
+bot.command('change', async (ctx) => {
+    const res = await client.query('ALTER TABLE tg_droplink_data ALTER COLUMN video_size TYPE BIGINT');
+    console.log('res', res)
+});
+
 bot.command('delete', async (ctx) => {
     const res = await client.query('DROP TABLE IF EXISTS tg_droplink_data');
     console.log('res', res)
