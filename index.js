@@ -513,6 +513,7 @@ bot.command(['short_to_droplink', 'short_to_shorturllink', 'short_to_pdisklink']
                         const messageDetails = [
                             { 
                                 uniq_id: uniqID,
+                                full_url: `https://droplink-bot.herokuapp.com/${uniqID}`,
                                 org_url: ((isDropLink || isPdiskLink) ? URL : URL2),
                                 droplink: response.data.shortenedUrl, 
                                 video_name: video_name,
